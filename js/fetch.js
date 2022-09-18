@@ -4,17 +4,19 @@ const apiKey = '47eb0be30a3951ed99fa339633c75998';
 const openWeatherMap = 'https://api.openweathermap.org/data/2.5/weather?';
 
 // HTML Components
-const city = document.querySelector('#city');
+const input = document.querySelector('#city');
 const resultField = document.querySelector('.weather');
 const button = document.querySelector('#btn');
 const getLocation = document.querySelector('#get-location');
+
 
 /**
  * Get the data from Open Weather Map API. Return jsonResponse
  */
 
 const currentWeatherData = async () => {
-    const url = openWeatherMap + 'q=' + city.value + '&appid=' + apiKey;
+    
+    const  url = openWeatherMap + 'q=' + input.value + '&appid=' + apiKey;
     try {
         const response = await fetch(url);
         if(response.ok) {
@@ -22,6 +24,7 @@ const currentWeatherData = async () => {
             return jsonResponse;
         }
         alert('Wrong Input. Please enter a real city!');
+        
     } catch (error) {
         console.log(error);
     }
@@ -56,14 +59,16 @@ const getResults = function (event) {
         .then((weatherData) => {
             renderData(weatherData);
     });
+    
 
 }
 
+button.addEventListener('click', getResults);
 
- 
 const getUserLocation = function (event) {
     
-    event.preventDefault();  // Important!!
+    //event.preventDefault();  // Important!!
+    
     const options = {
         enableHighAccuracy: true,
         timeout: 5000,
@@ -75,11 +80,12 @@ const getUserLocation = function (event) {
      * input parameter. 
      */
     function success(pos) {
-        const crd = pos.coords;
-    
+        const crd =  pos.coords;
+        url = crd;
         console.log('Your current position is:');
         console.log(`Latitude : ${crd.latitude}`);
         console.log(`Longitude: ${crd.longitude}`);
+       
     }
     
     /**
@@ -93,6 +99,4 @@ const getUserLocation = function (event) {
     navigator.geolocation.getCurrentPosition(success, error, options);
 }
 
-button.addEventListener('click', getResults);
 getLocation.addEventListener('click', getUserLocation);
-  
