@@ -5,7 +5,7 @@ const openWeatherMap = 'https://api.openweathermap.org/data/2.5/weather?';
 
 // HTML Components
 const input = document.querySelector('#city');
-const resultField = document.querySelector('.weather');
+const resultField = document.querySelector('#weather');
 const button = document.querySelector('#btn');
 const getLocation = document.querySelector('#get-location');
 
@@ -13,10 +13,9 @@ const getLocation = document.querySelector('#get-location');
 /**
  * Get the data from Open Weather Map API. Return jsonResponse
  */
-
-const currentWeatherData = async () => {
+const currentWeatherData = async (url) => {
     
-    const  url = openWeatherMap + 'q=' + input.value + '&appid=' + apiKey;
+
     try {
         const response = await fetch(url);
         if(response.ok) {
@@ -33,11 +32,27 @@ const currentWeatherData = async () => {
 /**
  * Render information on HTML page 
  */
-const renderData = (res) => {
-    if(res.error) {
+const renderData = (response) => {
+    if(response.error) {
         resultField.innerHTML = '<p>something went wrong! :((</p>'
     } else {
-        resultField.innerHTML = res.weather[0].main;
+        const city = response.name;
+        const country = response.sys.country;
+        const weatherType = response.weather[0].main;
+        const weatherDescription = response.weather[0].description;
+        const temperature = Math.floor(response.main.temp);
+        const maxTemp = Math.floor(response.main.temp_max);
+        const minTemp = Math.floor(response.main.temp_min);
+        const humidity = response.main.humidity;
+        const visibility = response.visibility;
+        resultField.innerHTML = `<h2>${city}, ${country}</h2>`;
+        resultField.innerHTML += `<h3>${temperature}</h3>`;
+        resultField.innerHTML += `<h3>${weatherType}</h3>`;
+        resultField.innerHTML += `<h3>${weatherDescription}</h3>`;
+        resultField.innerHTML += `<h3>${maxTemp}</h3>`;
+        resultField.innerHTML += `<h3>${minTemp}</h3>`;
+        resultField.innerHTML += `<h3>${humidity}</h3>`;
+        resultField.innerHTML += `<h3>${visibility}</h3>`;
     }
 }
 
@@ -45,9 +60,10 @@ const renderData = (res) => {
  * This function is called when the button is pressed. It calls
  * the asynchronous function currentWeatherData
  */
-const getResults = function (event) {
+const getWeatherReport = function (event) {
     
     event.preventDefault();  // Important!!
+    const  url = openWeatherMap + 'q=' + input.value + '&appid=' + apiKey + '&units=metric';
 
     // Clear result box
     while(resultField.firstChild) {
@@ -55,19 +71,20 @@ const getResults = function (event) {
     }
 
     // Call async function and render on page the results
-    currentWeatherData()
+    currentWeatherData(url)
         .then((weatherData) => {
+            console.log(weatherData);
             renderData(weatherData);
     });
     
 
 }
 
-button.addEventListener('click', getResults);
+button.addEventListener('click', getWeatherReport);
 
 const getUserLocation = function (event) {
     
-    //event.preventDefault();  // Important!!
+    event.preventDefault();  // Important!!
     
     const options = {
         enableHighAccuracy: true,
@@ -81,11 +98,13 @@ const getUserLocation = function (event) {
      */
     function success(pos) {
         const crd =  pos.coords;
-        url = crd;
-        console.log('Your current position is:');
-        console.log(`Latitude : ${crd.latitude}`);
-        console.log(`Longitude: ${crd.longitude}`);
-       
+        const url = openWeatherMap + `lat=${crd.latitude}&lon=${crd.longitude}`+ '&appid=' + apiKey + '&units=metric';
+        // Call async function and render on page the results
+        currentWeatherData(url)
+            .then((weatherData) => {
+                renderData(weatherData);
+        });
+
     }
     
     /**
@@ -99,4 +118,5 @@ const getUserLocation = function (event) {
     navigator.geolocation.getCurrentPosition(success, error, options);
 }
 
+//getUserLocation();
 getLocation.addEventListener('click', getUserLocation);

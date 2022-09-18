@@ -1,0 +1,47 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #E8F9FD;
+}
+
+.input-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 400px;
+    color: #2155CD;
+    border-radius: 20px;
+    border: 1px solid;
+    background-color: #79DAE8;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 250px;
+}
+#city {
+    height: 40px;
+    border-radius: 10px;
+}
+button {
+    height: 50px;
+    width: 150px;
+    margin: 20px;
+    border-radius: 20px;
+    border: 1px solid;
+    background-color: #0AA1DD;
+}
+
+#weather {
+    color: #2155CD;
+    border-radius: 20px;
+    background-color: #79DAE8;
+}

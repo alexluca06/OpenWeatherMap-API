@@ -4,24 +4,26 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
     <script src="js/fetch.js" defer></script>
-    <title>Weather</title>
+    <script src="js/bootstrap.min.js" defer></script>
+    <title>How is the weather?</title>
 </head>
 <body>
-    <h1>How is the weather in your city?</h1>
+    <main>
+        <div class="input-container container my-5 border text-center">
+            <h1 class="m-3">How is the weather in your city?</h1>
+            <form >
+                <input type="text" id="city" name="city" placeholder=" Your City">
+                <button id="btn">Weather report</button>
+                <button id="get-location">In your location</button>
+            </form>
+        </div>
 
-    <div class="container">
-        <form >
-            <label for="city">City</label>
-            <input type="text" id="city" name="city">
-            <button id="btn">Weather report</button>
-            <button id="get-location">In your location</button>
-        </form>
-    </div>
-
-    <div class="weather">
-        
-    </div>
-    
+        <div id="weather" class="container text-center">
+            
+        </div>
+    </main>
 </body>
 </html>
