@@ -5,7 +5,7 @@ const openWeatherMap = 'https://api.openweathermap.org/data/2.5/weather?';
 
 // HTML Components
 const input = document.querySelector('#city');
-const resultField = document.querySelector('#weather');
+const resultField = document.querySelector('.weather');
 const button = document.querySelector('#btn');
 const getLocation = document.querySelector('#get-location');
 
@@ -29,6 +29,39 @@ const currentWeatherData = async (url) => {
     }
 }
 
+const getImageWeather = (weatherType) => {
+    const time = new Date();
+    let image='';
+    if(weatherType === 'Clear') {
+
+        if(time.getHours < 19) {
+            image = './images/sun.png';
+        } else {
+            image = './images/night.png';
+        }
+
+    } else if(weatherType === 'Clouds') {
+        
+        if(time.getHours < 19) {
+            image = './images/cloudy.png';
+        } else {
+            image = './images/cloudy_night.png';
+        }
+
+    } else if(weatherType === 'Rain') {
+        
+        if(time.getHours < 19) {
+            image = './images/rain.png';
+        } else {
+            image = './images/rain_night.png';
+        }
+
+    } else if(weatherType === 'Snow') {
+        image = './images/snow.png';
+    } 
+
+    return image;
+}
 /**
  * Render information on HTML page 
  */
@@ -45,8 +78,13 @@ const renderData = (response) => {
         const minTemp = Math.floor(response.main.temp_min);
         const humidity = response.main.humidity;
         const visibility = response.visibility;
-        resultField.innerHTML = `<h2>${city}, ${country}</h2>`;
-        resultField.innerHTML += `<h3>${temperature}</h3>`;
+        resultField.innerHTML = `<img src=${getImageWeather(weatherType)} alt="weather-Image" width="100" height="100">`
+        resultField.innerHTML += `<h2>${city}, ${country}</h2>`;
+        resultField.innerHTML += `<div class="temp container">
+            <h2 class="fs-1">${temperature}</h2>
+            <img src=./images/celsius.png alt="celsius" width="50" height="50">
+            <img src=./images/hot.png alt="thermometer" width="50" height="50">
+            </div>`;
         resultField.innerHTML += `<h3>${weatherType}</h3>`;
         resultField.innerHTML += `<h3>${weatherDescription}</h3>`;
         resultField.innerHTML += `<h3>${maxTemp}</h3>`;
@@ -79,8 +117,6 @@ const getWeatherReport = function (event) {
     
 
 }
-
-button.addEventListener('click', getWeatherReport);
 
 const getUserLocation = function (event) {
     
@@ -118,5 +154,5 @@ const getUserLocation = function (event) {
     navigator.geolocation.getCurrentPosition(success, error, options);
 }
 
-//getUserLocation();
+button.addEventListener('click', getWeatherReport);
 getLocation.addEventListener('click', getUserLocation);

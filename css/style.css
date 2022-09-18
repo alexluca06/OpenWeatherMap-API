@@ -28,6 +28,7 @@ form {
     height: 250px;
 }
 #city {
+    text-align: center;
     height: 40px;
     border-radius: 10px;
 }
@@ -40,8 +41,20 @@ button {
     background-color: #0AA1DD;
 }
 
-#weather {
+.weather {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 500px;
     color: #2155CD;
     border-radius: 20px;
     background-color: #79DAE8;
+}
+
+.temp {
+    display: flex;
+    justify-content:center;
+    align-content:center;
+
 }
